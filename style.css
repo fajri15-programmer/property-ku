@@ -12,7 +12,7 @@ body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #333; }
 /* Komponen Utama */
 header { background: var(--primary); color: #fff; padding: 1rem 0; text-align: center; }
 nav a { color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; }
-footer { background: #333; color: #fff; text-align: center; padding: 1rem 0; margin-top: 20px; }
+footer { background: #c33737; color: #fff; text-align: center; padding: 1rem 0; margin-top: 20px; }
 .container { width: 90%; max-width: 1000px; margin: 20px auto; }
 
 /* Buttons */
