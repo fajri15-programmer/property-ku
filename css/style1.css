@@ -1,0 +1,96 @@
+/* 1. Pengaturan Dasar & Tipografi */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif; /* Font lebih modern */
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #fff;
+    padding-bottom: 60px; /* Memberi ruang agar konten tidak tertutup footer fixed */
+}
+
+/* 2. Header & Navigasi */
+header {
+    background-color: #250276;
+    color: #fff;
+    padding: 20px 0; /* Padding atas-bawah lebih lega */
+    text-align: center;
+}
+
+header nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+header nav ul li {
+    display: inline-block; /* Lebih stabil daripada 'inline' */
+    margin: 0 15px;
+}
+
+/* Garis pembatas antar menu */
+header nav ul li:not(:last-child) {
+    border-right: 1px dotted #f9f9f9;
+    padding-right: 25px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s; /* Efek transisi halus */
+}
+
+header nav ul li a:hover {
+    color: #ffcc00; /* Warna berubah saat disentuh agar interaktif */
+    text-shadow: 0 0 5px rgba(255,255,255,0.3);
+}
+
+/* 3. Kontainer & Seksi */
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 0 20px; /* Padding agar tidak mepet layar saat di HP */
+}
+
+section {
+    padding: 60px 0;
+    text-align: center;
+}
+
+/* 4. Menu Item (Perbaikan Utama) */
+.menu-item {
+    margin-bottom: 40px;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.menu-item img {
+    max-width: 100%; /* Agar responsif di layar kecil */
+    width: 300px;    /* Ukuran konsisten */
+    height: 200px;
+    object-fit: cover; /* Gambar dipotong rapi, tidak gepeng */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+/* 5. Jam Operasional */
+#hours {
+    background-color: #f1f4f9; /* Biru sangat muda agar senada */
+    padding: 50px 0;
+}
+
+#hours p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* 6. Footer */
+footer {
+    background-color: #280872;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

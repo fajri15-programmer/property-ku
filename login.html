@@ -1,21 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Login Admin</title>
+    <title>Login | PropertyKu</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-    <header><h1>Login Sistem</h1></header>
-    <main class="container">
-        <form action="dashboard.html">
-            <label>Email:</label>
-            <input title="button" type="email" required>
-            <label>Password:</label>
-            <input title="button-cdn" type="password" required>
-            <button type="submit" class="btn">Masuk ke Dashboard</button>
-        </form>
-    </main>
+<body class="bg-light">
+
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <div class="col-md-6 d-none d-md-block p-0">
+            <div id="loginCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+                <div class="carousel-inner h-100">
+                    <div class="carousel-item active h-100">
+                        <img src="resource/rumah1.jpeg" class="d-block w-100 h-100 object-fit-cover" alt="Rumah 1">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="login-card p-5 bg-white shadow-lg rounded-4">
+                <h2 class="fw-bold mb-4">Selamat Datang Di Property</h2>
+                <p class="text-muted mb-4">Masukkan kredensial untuk mengelola properti.</p>
+                
+                <form action="lending-page.html" method="get">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2 mt-3">Masuk Sekarang</button>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <p>Belum punya akun? <a href="#" class="text-decoration-none">Daftar di sini</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

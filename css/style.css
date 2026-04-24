@@ -1,0 +1,125 @@
+.login-page {
+    background-color: var(--primary); /* Warna Hijau Utama */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mempercantik judul login agar sesuai tema */
+.login-title {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* 1. Variabel Warna - Tema Hijau & Gold */
+:root {
+    --primary: #064e3b;      /* Deep Forest Green */
+    --accent: #b45309;       /* Gold/Amber */
+    --light: #f0fdf4;        /* Soft Light Green background */
+    --text: #064e3b;
+    --sidebar-bg: #064e3b;
+    --bs-primary: #064e3b;    /* Override Bootstrap Primary */
+}
+
+/* 2. Global Reset */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body { font-family: 'Segoe UI', sans-serif; background: var(--light); color: var(--text); }
+
+/* 3. Layout Dashboard */
+.dashboard-body { 
+    display: flex; 
+    min-height: 100vh; 
+}
+
+/* Sidebar & Navigasi */
+.sidebar, .sidebar-nav { 
+    background-color: var(--sidebar-bg); 
+    color: white; 
+    padding: 20px; 
+}
+
+.sidebar h3, .sidebar-nav h4 { 
+    margin-bottom: 30px; 
+    color: var(--accent); 
+}
+
+.sidebar a, .sidebar-nav a { 
+    display: block; 
+    color: white; 
+    padding: 10px 0; 
+    text-decoration: none; 
+    opacity: 0.8; 
+}
+
+.sidebar a:hover, .sidebar-nav a:hover { 
+    opacity: 1; 
+}
+
+
+.active-link { 
+    background-color: var(--accent) !important; 
+    color: white !important; 
+}
+
+/* Main Content */
+.main-content { flex: 1; padding: 30px; }
+
+/* 4. Form & Table Styling */
+.form-section, .table-section, .card { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 8px; 
+    margin-bottom: 20px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+}
+
+/* Tombol Branding */
+.btn { 
+    background: var(--accent); 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+.btn:hover { background: #0b1781; color: white; }
+
+/* Tabel */
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+th { background: #f1f5f9; color: var(--primary); }
+
+/* 5. Khusus Kartu (Landing Page) */
+.card-img-top {
+    height: 350px; 
+    object-fit: cover; 
+    width: 100%;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Override Bootstrap Colors dengan Tema Kita */
+.bg-custom-green { 
+    background-color: var(--primary) !important; 
+}
+
+.text-custom-green { 
+    color: var(--primary) !important; 
+}
+
+.btn-primary { 
+    background-color: var(--accent) !important; 
+    border-color: var(--accent) !important; 
+}
+
+html {
+    scroll-behavior: smooth;
+}
