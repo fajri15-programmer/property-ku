@@ -1,125 +1,112 @@
-.login-page {
-    background-color: var(--primary); /* Warna Hijau Utama */
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+/* ==========================================================================
+   STYLE UTAMA PROJEK PROPERTYKU (SESUAI MODUL UAS)
+   ========================================================================== */
 
-/* Mempercantik judul login agar sesuai tema */
-.login-title {
-    color: var(--primary);
-    font-weight: bold;
-}
-
-/* 1. Variabel Warna - Tema Hijau & Gold */
 :root {
-    --primary: #064e3b;      /* Deep Forest Green */
-    --accent: #ef8431;       /* Gold/Amber */
-    --light: #f0fdf4;        /* Soft Light Green background */
-    --text: #064e3b;
-    --sidebar-bg: #064e3b;
-    --bs-primary: #064e3b;    /* Override Bootstrap Primary */
+    --warna-utama: #280872; /* Warna ungu gelap wajib sesuai gambar modul */
+    --warna-kontras: #ffc107; /* Warna kuning warning untuk aksen tombol */
+    --warna-putih: #ffffff;
 }
 
-/* 2. Global Reset */
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
 }
 
-body { font-family: 'Segoe UI', sans-serif; background: var(--light); color: var(--text); }
-
-/* 3. Layout Dashboard */
-.dashboard-body { 
-    display: flex; 
-    min-height: 100vh; 
-}
-
-/* Sidebar & Navigasi */
-.sidebar, .sidebar-nav { 
-    background-color: var(--sidebar-bg); 
-    color: white; 
-    padding: 20px; 
-}
-
-.sidebar h3, .sidebar-nav h4 { 
-    margin-bottom: 30px; 
-    color: var(--accent); 
-}
-
-.sidebar a, .sidebar-nav a { 
-    display: block; 
-    color: white; 
-    padding: 10px 0; 
-    text-decoration: none; 
-    opacity: 0.8; 
-}
-
-.sidebar a:hover, .sidebar-nav a:hover { 
-    opacity: 1; 
-}
-
-
-.active-link { 
-    background-color: var(--accent) !important; 
-    color: white !important; 
-}
-
-/* Main Content */
-.main-content { flex: 1; padding: 30px; }
-
-/* 4. Form & Table Styling */
-.form-section, .table-section, .card { 
-    background: white; 
-    padding: 20px; 
-    border-radius: 8px; 
-    margin-bottom: 20px; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
-}
-
-/* Tombol Branding */
-.btn { 
-    background: var(--accent); 
-    color: white; 
-    border: none; 
-    padding: 10px 20px; 
-    border-radius: 4px; 
-    cursor: pointer; 
-}
-.btn:hover { background: #0b1781; color: white; }
-
-/* Tabel */
-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
-th { background: #f1f5f9; color: var(--primary); }
-
-/* 5. Khusus Kartu (Landing Page) */
-.card-img-top {
-    height: 350px; 
-    object-fit: cover; 
+/* ==========================================================================
+   Halaman Login (login.php)
+   ========================================================================== */
+.login-card {
     width: 100%;
+    max-width: 450px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
 }
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+/* ==========================================================================
+   Halaman Landing Page (lending-page.php)
+   ========================================================================== */
+/* Mengganti bg-custom-green menjadi warna ungu sesuai modul dosen */
+.bg-custom-green {
+    background-color: var(--warna-utama) !important;
+}
+
+.text-custom-green {
+    color: var(--warna-utama) !important;
+}
+
+header.bg-custom-green {
+    background: linear-gradient(135deg, #280872 0%, #1a044e 100%);
+}
+
 .card {
-    display: flex;
-    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Override Bootstrap Colors dengan Tema Kita */
-.bg-custom-green { 
-    background-color: var(--primary) !important; 
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
 }
 
-.text-custom-green { 
-    color: var(--primary) !important; 
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
 }
 
-.btn-primary { 
-    background-color: var(--accent) !important; 
-    border-color: var(--accent) !important; 
+footer {
+    background-color: #1a044e !important;
 }
 
-html {
-    scroll-behavior: smooth;
+/* ==========================================================================
+   Halaman Dashboard Admin (dashboard.php)
+   ========================================================================== */
+.sidebar-nav {
+    background-color: var(--warna-utama);
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar-nav h4 {
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.sidebar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.75) !important;
+    padding: 12px 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.sidebar-nav .nav-link:hover {
+    color: var(--warna-putih) !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Menandai halaman yang sedang aktif di sidebar */
+.sidebar-nav .nav-link.active-link {
+    color: var(--warna-putih) !important;
+    background-color: var(--warna-kontras) !important;
+    color: #000000 !important; /* Teks hitam agar kontras dengan warna kuning */
+    font-weight: 600;
+}
+
+.card-clickable:hover {
+    opacity: 0.9;
+}
+
+/* Kustomisasi Tabel di Dashboard */
+.table th {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
 }
