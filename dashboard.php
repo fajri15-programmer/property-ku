@@ -8,6 +8,11 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
+// Generate CSRF token jika belum ada
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Ambil data rumah dari database
 $query = "SELECT * FROM properties ORDER BY id DESC";
 $result = mysqli_query($koneksi, $query);
@@ -48,18 +53,20 @@ $result = mysqli_query($koneksi, $query);
             <div class="card p-4 mb-4 border-0 shadow-sm rounded-3">
                 <h5 class="mb-3 fw-bold text-dark">Tambah Properti Baru</h5>
                 <form class="row g-2 align-items-center" action="proses.php?aksi=tambah" method="POST" enctype="multipart/form-data">
+                    <!-- KEAMANAN: CSRF Token -->
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                    
                     <div class="col-md-3">
-                        <input type="text" name="nama_properti" class="form-control" placeholder="Nama Perumahan" required>
+                        <input type="text" name="nama_properti" class="form-control" placeholder="Nama Perumahan" required maxlength="100">
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="lokasi" class="form-control" placeholder="Lokasi" required>
+                        <input type="text" name="lokasi" class="form-control" placeholder="Lokasi" required maxlength="200">
                     </div>
                     <div class="col-md-2">
-                        <!-- PERBAIKAN 1: type diubah ke number agar mencegah user menginput karakter teks/simbol -->
-                        <input type="number" name="harga" class="form-control" placeholder="Harga Angka Murni" required>
+                        <input type="number" name="harga" class="form-control" placeholder="Harga Angka Murni" required min="1">
                     </div>
                     <div class="col-md-2">
-                        <input type="file" name="foto_properti" class="form-control" accept="image/*" required>
+                        <input type="file" name="foto_properti" class="form-control" accept="image/jpeg,image/png,image/gif,image/webp" required>
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-success w-100 fw-bold">Simpan</button>
@@ -82,17 +89,25 @@ $result = mysqli_query($koneksi, $query);
                         </thead>
                         <tbody>
                             <?php while ($p = mysqli_fetch_assoc($result)) { ?>
-                            <tr id="row-<?php echo $p['id']; ?>">
-                                <td><strong class="text-dark"><?php echo $p['nama_properti']; ?></strong></td>
-                                <td><?php echo $p['lokasi']; ?></td>
+                            <tr id="row-<?php echo intval($p['id']); ?>"
+                                data-id="<?php echo intval($p['id']); ?>"
+                                data-nama="<?php echo htmlspecialchars($p['nama_properti'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-lokasi="<?php echo htmlspecialchars($p['lokasi'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-harga="<?php echo intval($p['harga']); ?>"
+                                data-status="<?php echo htmlspecialchars($p['status'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <td><strong class="text-dark"><?php echo htmlspecialchars($p['nama_properti'], ENT_QUOTES, 'UTF-8'); ?></strong></td>
+                                <td><?php echo htmlspecialchars($p['lokasi'], ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td class="text-success fw-bold">Rp <?php echo number_format($p['harga'], 0, ',', '.'); ?></td>
-                                <td><span class="badge bg-success"><?php echo $p['status']; ?></span></td>
+                                <td><span class="badge bg-success"><?php echo htmlspecialchars($p['status'], ENT_QUOTES, 'UTF-8'); ?></span></td>
                                 <td class="text-center">
                                     <button class="btn btn-sm btn-outline-warning fw-semibold me-1" 
-                                            onclick="bukaModalEdit(<?php echo $p['id']; ?>, '<?php echo $p['nama_properti']; ?>', '<?php echo $p['lokasi']; ?>', <?php echo $p['harga']; ?>, '<?php echo $p['status']; ?>')">
+                                            onclick="bukaModalEdit(this.closest('tr'))">
                                         Edit
                                     </button>
-                                    <button class="btn btn-sm btn-outline-danger fw-semibold" onclick="hapusProperti(<?php echo $p['id']; ?>, '<?php echo $p['nama_properti']; ?>')">Hapus</button>
+                                    <button class="btn btn-sm btn-outline-danger fw-semibold" 
+                                            onclick="hapusProperti(this.closest('tr'))">
+                                        Hapus
+                                    </button>
                                 </td>
                             </tr>
                             <?php } ?>
@@ -108,6 +123,9 @@ $result = mysqli_query($koneksi, $query);
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
+                <!-- KEAMANAN: CSRF Token -->
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold text-success">Edit Data Properti</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -116,16 +134,15 @@ $result = mysqli_query($koneksi, $query);
                     <input type="hidden" name="id" id="edit-id">
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Nama Perumahan</label>
-                        <input type="text" name="nama_properti" id="edit-nama" class="form-control" required>
+                        <input type="text" name="nama_properti" id="edit-nama" class="form-control" required maxlength="100">
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Lokasi</label>
-                        <input type="text" name="lokasi" id="edit-lokasi" class="form-control" required>
+                        <input type="text" name="lokasi" id="edit-lokasi" class="form-control" required maxlength="200">
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Harga</label>
-                        <!-- PERBAIKAN 2: type diubah ke number di dalam modal edit data -->
-                        <input type="number" name="harga" id="edit-harga" class="form-control" required>
+                        <input type="number" name="harga" id="edit-harga" class="form-control" required min="1">
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Status</label>
@@ -136,7 +153,7 @@ $result = mysqli_query($koneksi, $query);
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Ganti Foto Rumah (Kosongkan jika tidak ingin diubah)</label>
-                        <input type="file" name="foto_properti" class="form-control" accept="image/*">
+                        <input type="file" name="foto_properti" class="form-control" accept="image/jpeg,image/png,image/gif,image/webp">
                     </div>
                 </div>
                 <div class="modal-header justify-content-end gap-2 border-0">
@@ -151,20 +168,37 @@ $result = mysqli_query($koneksi, $query);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-function bukaModalEdit(id, nama, lokasi, harga, status) {
-    document.getElementById('edit-id').value = id;
-    document.getElementById('edit-nama').value = nama;
-    document.getElementById('edit-lokasi').value = lokasi;
-    document.getElementById('edit-harga').value = harga;
-    document.getElementById('edit-status').value = status;
+// KEAMANAN: CSRF token disimpan di variabel JS untuk digunakan di fetch
+var csrfToken = <?php echo json_encode($_SESSION['csrf_token']); ?>;
+
+// KEAMANAN: Data diambil dari data-attributes (bukan inline PHP di dalam JS)
+function bukaModalEdit(row) {
+    document.getElementById('edit-id').value = row.dataset.id;
+    document.getElementById('edit-nama').value = row.dataset.nama;
+    document.getElementById('edit-lokasi').value = row.dataset.lokasi;
+    document.getElementById('edit-harga').value = row.dataset.harga;
+    document.getElementById('edit-status').value = row.dataset.status;
     
     var myModal = new bootstrap.Modal(document.getElementById('modalEdit'));
     myModal.show();
 }
 
-function hapusProperti(id, nama) {
+// KEAMANAN: Hapus sekarang menggunakan POST + CSRF token
+function hapusProperti(row) {
+    var id = row.dataset.id;
+    var nama = row.dataset.nama;
+    
     if (confirm("Apakah Anda yakin ingin menghapus properti '" + nama + "'?")) {
-        fetch('proses.php?aksi=hapus&id=' + id, { method: 'GET' })
+        fetch('proses.php?aksi=hapus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id,
+                csrf_token: csrfToken
+            })
+        })
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {

@@ -2,27 +2,53 @@
 session_start();
 include 'koneksi.php';
 
+// Generate CSRF token jika belum ada
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // SINKRONISASI: Menggunakan $_POST agar data aman dan alur session rapi
-if (isset($_POST['username']) && isset($_POST['password'])) {
-    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
-    $password = mysqli_real_escape_string($koneksi, $_POST['password']);
-
-    $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-    $result = mysqli_query($koneksi, $query);
-
-    if (mysqli_num_rows($result) > 0) {
-        $user = mysqli_fetch_assoc($result);
-        $_SESSION['logged_in'] = true;
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['nama_lengkap'] = $user['nama_lengkap'];
-        
-        // Alihkan ke halaman landing page setelah berhasil masuk
-        header("Location: lending-page.php");
-        exit();
-    } else {
-        echo "<script>alert('Username atau Password salah!'); window.location='login.php';</script>";
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
+    
+    // KEAMANAN: Verifikasi CSRF token
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        echo "<script>alert('Permintaan tidak valid. Silakan coba lagi.'); window.location='login.php';</script>";
         exit();
     }
+
+    $username = trim($_POST['username']);
+    $password = $_POST['password'];
+
+    // KEAMANAN: Menggunakan Prepared Statement untuk mencegah SQL Injection
+    $stmt = mysqli_prepare($koneksi, "SELECT * FROM users WHERE username = ?");
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($user = mysqli_fetch_assoc($result)) {
+        // KEAMANAN: Menggunakan password_verify untuk mencocokkan hash
+        if (password_verify($password, $user['password'])) {
+            // KEAMANAN: Regenerate session ID untuk mencegah Session Fixation
+            session_regenerate_id(true);
+            
+            $_SESSION['logged_in'] = true;
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['nama_lengkap'] = $user['nama_lengkap'] ?? $user['username'];
+            
+            // Reset CSRF token setelah login berhasil
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+            
+            // Alihkan ke halaman landing page setelah berhasil masuk
+            header("Location: lending-page.php");
+            exit();
+        }
+    }
+    
+    // Pesan generik agar penyerang tidak tahu apakah username atau password yang salah
+    echo "<script>alert('Username atau Password salah!'); window.location='login.php';</script>";
+    exit();
+    
+    mysqli_stmt_close($stmt);
 }
 ?>
 <!doctype html>
@@ -54,6 +80,20 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             width: 100%;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2) !important; /* Bayangan box dibuat lebih tegas */
         }
+        
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            
+            /* KUNCI UTAMA: Mematikan efek membal/karet saat di-scroll mentok */
+            overscroll-behavior: none !important; 
+            
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+        }
+
     </style>
 </head>
 <body class="login-fullscreen">
@@ -67,13 +107,16 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         </div>
         
         <form action="login.php" method="post">
+            <!-- KEAMANAN: CSRF Token -->
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+            
             <div class="mb-3">
                 <label class="form-label fw-semibold">Username</label>
-                <input type="text" name="username" class="form-control py-2" placeholder="Masukkan username" required>
+                <input type="text" name="username" class="form-control py-2" placeholder="Masukkan username" required maxlength="50" autocomplete="username">
             </div>
             <div class="mb-3">
                 <label class="form-label fw-semibold">Password</label>
-                <input type="password" name="password" class="form-control py-2" placeholder="••••••••" required>
+                <input type="password" name="password" class="form-control py-2" placeholder="••••••••" required maxlength="255" autocomplete="current-password">
             </div>
             <button type="submit" class="btn btn-success w-100 py-2 mt-3 fw-bold">Masuk Sekarang</button>
         </form>

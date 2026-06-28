@@ -11,6 +11,16 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
+    /* Sticky Footer: body jadi flex column agar footer selalu di bawah */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+footer {
+    margin-top: auto !important;
+    flex-shrink: 0;
 }
 
 /* ==========================================================================

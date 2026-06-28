@@ -73,14 +73,15 @@ $result = mysqli_query($koneksi, $query);
         ?>
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
-                <!-- SINKRONISASI: Menambahkan inline style agar tinggi semua gambar seragam dan proporsional -->
-                <img src="<?php echo $gambar_fjr; ?>" class="card-img-top" alt="Rumah" style="height: 230px; object-fit: cover;">
+                <!-- KEAMANAN: htmlspecialchars pada src gambar -->
+                <img src="<?php echo htmlspecialchars($gambar_fjr, ENT_QUOTES, 'UTF-8'); ?>" class="card-img-top" alt="Rumah" style="height: 230px; object-fit: cover;">
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold text-dark"><?php echo $p['nama_properti']; ?></h5>
-                    <p class="text-muted small mb-3"><i class="bi bi-geo-alt-fill text-danger"></i> <?php echo $p['lokasi']; ?></p>
+                    <!-- KEAMANAN: htmlspecialchars pada semua output data -->
+                    <h5 class="card-title fw-bold text-dark"><?php echo htmlspecialchars($p['nama_properti'], ENT_QUOTES, 'UTF-8'); ?></h5>
+                    <p class="text-muted small mb-3"><i class="bi bi-geo-alt-fill text-danger"></i> <?php echo htmlspecialchars($p['lokasi'], ENT_QUOTES, 'UTF-8'); ?></p>
                     <h5 class="text-success fw-bold mb-3 mt-auto">Rp <?php echo number_format($p['harga'], 0, ',', '.'); ?></h5>
                     
-                    <a href="<?php echo $link_wa; ?>" target="_blank" class="btn btn-whatsapp w-100 py-2">
+                    <a href="<?php echo htmlspecialchars($link_wa, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp w-100 py-2">
                         Hubungi via WhatsApp
                     </a>
                 </div>
