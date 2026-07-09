@@ -26,24 +26,76 @@ $result = mysqli_query($koneksi, $query);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
     <style>
-        .sidebar-nav-custom { background-color: #198754; min-vh-100; }
-        .sidebar-nav-custom .nav-link { color: rgba(255, 255, 255, 0.75); transition: all 0.3s ease; }
-        .sidebar-nav-custom .nav-link:hover { color: #ffffff; background-color: rgba(255, 255, 255, 0.1); }
-        .active-link-custom { background-color: rgba(255, 255, 255, 0.2); color: #ffffff !important; font-weight: bold; }
-        .btn-logout-sidebar { transition: all 0.3s ease; }
-        .btn-logout-sidebar:hover { background-color: #dc3545 !important; color: #ffffff !important; }
+        /* KUNCI TOTAL: Mematikan efek karet/membal di dashboard */
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background-color: #f8f9fa;
+            
+            /* Mengunci overscroll di layar utama */
+            overscroll-behavior: none !important; 
+            overflow-x: hidden !important;
+        }
+
+        /* Setingan untuk sidebar kamu */
+        .sidebar-nav-custom {
+            background-color: #198754 !important; /* Hijau Bootstrap bg-success */
+            overscroll-behavior: none !important;
+        }
+
+        /* Pembungkus konten utama di sebelah kanan sidebar */
+        .col-md-10, .main-content-custom { 
+            height: 100vh !important;
+            overflow-y: auto !important;
+            
+            /* Mengunci overscroll khusus di area konten/tabel agar pas di-scroll tidak membal */
+            overscroll-behavior-y: none !important; 
+            padding: 20px !important;
+        }
+
+        /* Style tambahan untuk link aktif di sidebar kamu */
+        .active-link-custom {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            color: #fff !important;
+            font-weight: bold;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff !important;
+        }
     </style>
 </head>
 <body class="bg-light">
 
 <div class="container-fluid">
     <div class="row">
+        <div class="container-fluid">
+    <div class="row">
         <div class="col-md-2 sidebar-nav-custom p-3 min-vh-100">
             <h4 class="text-white fw-bold mb-4">PropertyKu</h4>
             <ul class="nav flex-column">
-                <li class="nav-item mb-2"><a href="#" class="nav-link active-link-custom rounded">Dashboard</a></li>
-                <li class="nav-item mb-2"><a href="lending-page.php" class="nav-link rounded">Lihat Properti</a></li>
-                <li class="nav-item mb-2 mt-4"><a href="logout.php" class="nav-link btn-logout-sidebar rounded text-white-50">Logout</a></li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link active-link-custom rounded">Dashboard</a>
+                </li>
+                
+                <li class="nav-item mb-2">
+                    <a href="index.php" target="_blank" class="nav-link rounded text-white">
+                        👁️Lihat Web Publik
+                    </a>
+                </li>
+                
+                <li class="nav-item mb-2">
+                    <a href="lending-page.php" class="nav-link rounded">
+                        Lihat Properti
+                    </a>
+                </li>
+
+                <li class="nav-item mb-2 mt-4">
+                    <a href="logout.php" class="nav-link btn-logout-sidebar rounded text-white-50">Logout</a>
+                </li>
             </ul>
         </div>
 

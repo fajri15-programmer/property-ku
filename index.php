@@ -1,8 +1,8 @@
 <?php
 include 'koneksi.php';
 
-// Ambil data rumah dari database MySQL agar customer selalu melihat data terbaru
-$query = "SELECT * FROM properties WHERE status = 'Tersedia' ORDER BY id DESC";
+// Ambil data rumah dari database MySQL untuk dilihat publik
+$query = "SELECT * FROM properties ORDER BY id DESC";
 $result = mysqli_query($koneksi, $query);
 ?>
 <!doctype html>
@@ -14,6 +14,19 @@ $result = mysqli_query($koneksi, $query);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
     <style>
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            
+            /* KUNCI UTAMA: Mematikan efek membal/karet saat di-scroll mentok */
+            overscroll-behavior: none !important; 
+            
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+        }
+
         .btn-whatsapp {
             background-color: #25d366;
             color: white;
